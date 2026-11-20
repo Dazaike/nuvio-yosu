@@ -1,7 +1,7 @@
 {
   "name": "Yosu",
   "author": "local",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "scrapers": [
     {
       "id": "4khdhub",
@@ -265,7 +265,7 @@
     {
       "id": "nepu",
       "name": "Nepu",
-      "description": "nepu.is streams (needs cookies and stuff)",
+      "description": "nepu.is streams (needs cookies)",
       "version": "1.0.4",
       "author": "local",
       "supportedTypes": [
@@ -285,7 +285,7 @@
     {
       "id": "popcornmovies",
       "name": "PopcornMovies",
-      "description": "popcornmovies.st streams (needs cookies and stuff)",
+      "description": "popcornmovies.st streams (needs cookies)",
       "version": "1.0.1",
       "author": "local",
       "supportedTypes": [
