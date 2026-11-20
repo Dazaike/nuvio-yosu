@@ -1,0 +1,196 @@
+{
+  "name": "Yosu",
+  "author": "local",
+  "version": "1.0.0",
+  "scrapers": [
+    {
+      "id": "4khdhub",
+      "name": "4KHDHub",
+      "description": "4KHDHub direct links",
+      "version": "1.0.2",
+      "author": "Nuvio Team",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/4khdhub.js",
+      "enabled": true,
+      "formats": [
+        "mkv"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=4khdhub.click&sz=128",
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "uhdmovies",
+      "name": "UHDMovies",
+      "description": "UHD Movies streaming with multiple resolution",
+      "version": "1.2.0",
+      "author": "Nuvio Team",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/uhdmovies.js",
+      "enabled": true,
+      "formats": [
+        "mkv"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=uhdmovies.pink&sz=128",
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "vidlink",
+      "name": "Vidlink",
+      "description": "Vidlink streaming with encrypted TMDB ID support for movies and TV shows",
+      "version": "1.0.0",
+      "author": "Nuvio Team",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/vidlink.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "logo": "https://vidlink.pro/favicon.ico",
+      "contentLanguage": [
+        "en"
+      ]
+    },
+    {
+      "id": "castle",
+      "name": "Castle",
+      "description": "Multi Lang provider",
+      "version": "1.0.0",
+      "author": "Nuvio Team",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/castle.js",
+      "enabled": true,
+      "formats": [
+        "mp4",
+        "m3u8"
+      ],
+      "logo": "https://static.hbayy.com/simple-blog-13/prod/_nuxt/big-logo.DESZ4mBj.png",
+      "contentLanguage": [
+        "en",
+        "hi",
+        "ta",
+        "te",
+        "ml",
+        "kn"
+      ]
+    },
+    {
+      "id": "movieblast",
+      "name": "MovieBlast",
+      "description": "Direct links via MovieBlast API with multi-language support",
+      "version": "1.0.0",
+      "author": "Nuvio Team",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/movieblast.js",
+      "enabled": true,
+      "formats": [
+        "mp4",
+        "mkv"
+      ],
+      "logo": "https://raw.githubusercontent.com/phisher98/TVVVV/refs/heads/main/Icons/movieblast.png",
+      "contentLanguage": [
+        "te",
+        "hi",
+        "en"
+      ]
+    },
+    {
+      "id": "moviesdrive",
+      "name": "MoviesDrive",
+      "description": "MoviesDrive streaming with HubCloud and Google Drive extraction",
+      "version": "1.0.0",
+      "author": "Nuvio Team",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/moviesdrive.js",
+      "enabled": true,
+      "formats": [
+        "mkv",
+        "mp4"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=moviesdrives.my&sz=128",
+      "contentLanguage": [
+        "en",
+        "hin"
+      ]
+    },
+    {
+      "id": "dulo",
+      "version": "1.0.0",
+      "author": "local",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/dulo.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ],
+      "name": "Dulo",
+      "description": "Dulo (dulo.mov) streams, up to 4K HLS",
+      "formats": [
+        "m3u8"
+      ]
+    },
+    {
+      "id": "movy",
+      "version": "1.0.0",
+      "author": "local",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/movy.js",
+      "enabled": true,
+      "contentLanguage": [
+        "en"
+      ],
+      "name": "Movy",
+      "description": "Movy (movy.sx) streams, Auto (Best) first",
+      "formats": [
+        "m3u8"
+      ]
+    },
+    {
+      "id": "framextv",
+      "name": "frameXTV",
+      "description": "Movies and TV via the frameXTV stream API (HLS)",
+      "version": "1.0.6",
+      "author": "local",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/framextv.js",
+      "enabled": true,
+      "formats": [
+        "m3u8"
+      ],
+      "contentLanguage": [
+        "en"
+      ]
+    }
+  ]
+}
