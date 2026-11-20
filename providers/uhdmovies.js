@@ -396,3 +396,88 @@ function getStreams(tmdbId, mediaType, seasonNum = 1, episodeNum = 1) {
   });
 }
 module.exports = { getStreams };
+
+// ---- Yosu user settings (appended to every provider by build.js; edit tail.js, not providers/) ----
+// Settings gear of the plugin row: resolution toggles, size limits, blocked words, hide subtitles, sort.
+// Values arrive in SCRAPER_SETTINGS (per provider). Streams whose resolution or size cannot be read are kept.
+(function () {
+  var RES = [
+    { key: 'res_4k', id: '4k', label: '4K / 2160p' },
+    { key: 'res_1080p', id: '1080p', label: '1080p' },
+    { key: 'res_720p', id: '720p', label: '720p' },
+    { key: 'res_480p', id: '480p', label: '480p' },
+    { key: 'res_360p', id: '360p', label: '360p' }
+  ];
+  var RANK = { '4k': 0, '1080p': 1, '720p': 2, '480p': 3, '360p': 4, unknown: 5 };
+
+  function settings() { return (typeof SCRAPER_SETTINGS !== 'undefined' && SCRAPER_SETTINGS) || {}; }
+  function on(v, dflt) { return v === undefined || v === null || v === '' ? dflt : (v === true || v === 'true'); }
+  function numOrNull(v) { var n = parseFloat(v); return isFinite(n) && n >= 0 ? n : null; }
+  function textOf(s) { return [s.name, s.title, s.quality, s.size].filter(Boolean).join(' '); }
+  function parseRes(t) {
+    if (/2160p|\b4k\b|\buhd\b/i.test(t)) return '4k';
+    var r = ['1080p', '720p', '480p', '360p'];
+    for (var i = 0; i < r.length; i++) if (t.toLowerCase().indexOf(r[i]) >= 0) return r[i];
+    return 'unknown';
+  }
+  function parseGB(t) {
+    var m = /(\d+(?:\.\d+)?)\s*(GB|MB)/i.exec(t);
+    if (!m) return null;
+    var n = parseFloat(m[1]);
+    return m[2].toUpperCase() === 'MB' ? n / 1024 : n;
+  }
+
+  function apply(streams) {
+    if (!Array.isArray(streams)) return streams;
+    var st = settings();
+    var allowed = {};
+    RES.forEach(function (r) { allowed[r.id] = on(st[r.key], true); });
+    var minGB = numOrNull(st.min_gb), maxGB = numOrNull(st.max_gb);
+    var block = String(st.block || '').toLowerCase().split(',').map(function (b) { return b.trim(); }).filter(Boolean);
+    var hideSubs = on(st.hide_subs, false);
+    var sort = st.sort === 'quality' || st.sort === 'size' ? st.sort : 'provider';
+
+    var rows = [];
+    streams.forEach(function (s, n) {
+      if (!s) return;
+      var t = textOf(s), res = parseRes(t), gb = parseGB(t), low = t.toLowerCase();
+      if (res !== 'unknown' && !allowed[res]) return;
+      if (gb !== null && ((minGB !== null && gb < minGB) || (maxGB !== null && gb > maxGB))) return;
+      if (block.some(function (b) { return low.indexOf(b) >= 0; })) return;
+      var out = s;
+      if (hideSubs && s.subtitles) { out = {}; for (var k in s) if (k !== 'subtitles') out[k] = s[k]; }
+      rows.push({ s: out, r: RANK[res], gb: gb, n: n });
+    });
+    if (sort === 'quality') rows.sort(function (a, b) { return a.r - b.r || a.n - b.n; });
+    else if (sort === 'size') rows.sort(function (a, b) { return (a.gb === null) - (b.gb === null) || (b.gb || 0) - (a.gb || 0) || a.n - b.n; });
+    return rows.map(function (x) { return x.s; });
+  }
+
+  function onSettings() {
+    var out = [{ type: 'header', label: 'Resolutions to show' }];
+    RES.forEach(function (r) { out.push({ type: 'toggle', key: r.key, label: r.label, defaultValue: true }); });
+    out.push({ type: 'info', label: 'Streams with no detectable resolution or size are always kept.' });
+    out.push({ type: 'header', label: 'Size' });
+    out.push({ type: 'text', key: 'min_gb', label: 'Minimum size (GB)', placeholder: 'no minimum' });
+    out.push({ type: 'text', key: 'max_gb', label: 'Maximum size (GB)', placeholder: 'no maximum' });
+    out.push({ type: 'header', label: 'Filtering' });
+    out.push({ type: 'text', key: 'block', label: 'Blocked words', placeholder: 'cam, hdcam, hindi', description: 'Comma separated. A stream is hidden if its name or title contains any of them.' });
+    out.push({ type: 'toggle', key: 'hide_subs', label: 'Hide subtitles', description: 'Drop the subtitles a stream comes with.', defaultValue: false });
+    out.push({
+      type: 'select', key: 'sort', label: 'Sort', defaultValue: 'provider',
+      options: [
+        { label: "Provider's order", value: 'provider' },
+        { label: 'Best quality first', value: 'quality' },
+        { label: 'Largest first', value: 'size' }
+      ]
+    });
+    return out;
+  }
+
+  var hasModule = typeof module !== 'undefined' && module.exports;
+  var host = hasModule ? module.exports : global;
+  var inner = host.getStreams;
+  function getStreams() { return Promise.resolve(inner.apply(null, arguments)).then(apply); }
+  if (hasModule) module.exports = { getStreams: getStreams, onSettings: onSettings };
+  else { global.getStreams = getStreams; global.onSettings = onSettings; }
+})();

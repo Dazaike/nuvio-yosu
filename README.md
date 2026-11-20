@@ -20,3 +20,10 @@ Prints a `http://<ip>:8787/manifest.json` URL for this device or others on your 
 
 The addon's server-side extras (resolution filter, size limits, block words, provider order, smart stream testing and the
 dashboard) need a server. They stay in `nuvio-yoru-addon`; use Nuvio's own filters here.
+
+## Settings
+
+Every provider has its own gear in Nuvio (settings are stored per provider): resolutions to show (4K, 1080p, 720p, 480p,
+360p), minimum and maximum size in GB, blocked words, hide subtitles, and sort (provider's order, best quality, largest).
+Streams with no readable resolution or size are kept. The code is `tail.js`, appended to each `src/<id>.js` by `node build.js`;
+edit those, rebuild, and commit `providers/` (that is what Nuvio fetches).

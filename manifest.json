@@ -1,13 +1,13 @@
 {
   "name": "Yosu",
   "author": "local",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scrapers": [
     {
       "id": "4khdhub",
       "name": "4KHDHub",
       "description": "4KHDHub direct links",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "author": "Nuvio Team",
       "supportedTypes": [
         "movie",
@@ -21,13 +21,14 @@
       "logo": "https://www.google.com/s2/favicons?domain=4khdhub.click&sz=128",
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "hasSettings": true
     },
     {
       "id": "uhdmovies",
       "name": "UHDMovies",
       "description": "UHD Movies streaming with multiple resolution",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": "Nuvio Team",
       "supportedTypes": [
         "movie",
@@ -41,13 +42,14 @@
       "logo": "https://www.google.com/s2/favicons?domain=uhdmovies.pink&sz=128",
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "hasSettings": true
     },
     {
       "id": "vidlink",
       "name": "Vidlink",
       "description": "Vidlink streaming with encrypted TMDB ID support for movies and TV shows",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "Nuvio Team",
       "supportedTypes": [
         "movie",
@@ -62,13 +64,14 @@
       "logo": "https://vidlink.pro/favicon.ico",
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "hasSettings": true
     },
     {
       "id": "castle",
       "name": "Castle",
       "description": "Multi Lang provider",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "Nuvio Team",
       "supportedTypes": [
         "movie",
@@ -88,13 +91,14 @@
         "te",
         "ml",
         "kn"
-      ]
+      ],
+      "hasSettings": true
     },
     {
       "id": "movieblast",
       "name": "MovieBlast",
       "description": "Direct links via MovieBlast API with multi-language support",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "Nuvio Team",
       "supportedTypes": [
         "movie",
@@ -111,13 +115,14 @@
         "te",
         "hi",
         "en"
-      ]
+      ],
+      "hasSettings": true
     },
     {
       "id": "moviesdrive",
       "name": "MoviesDrive",
       "description": "MoviesDrive streaming with HubCloud and Google Drive extraction",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "Nuvio Team",
       "supportedTypes": [
         "movie",
@@ -133,11 +138,12 @@
       "contentLanguage": [
         "en",
         "hin"
-      ]
+      ],
+      "hasSettings": true
     },
     {
       "id": "dulo",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "local",
       "supportedTypes": [
         "movie",
@@ -152,11 +158,12 @@
       "description": "Dulo (dulo.mov) streams, up to 4K HLS",
       "formats": [
         "m3u8"
-      ]
+      ],
+      "hasSettings": true
     },
     {
       "id": "movy",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "local",
       "supportedTypes": [
         "movie",
@@ -171,13 +178,14 @@
       "description": "Movy (movy.sx) streams, Auto (Best) first",
       "formats": [
         "m3u8"
-      ]
+      ],
+      "hasSettings": true
     },
     {
       "id": "framextv",
       "name": "frameXTV",
       "description": "Movies and TV via the frameXTV stream API (HLS)",
-      "version": "1.0.6",
+      "version": "1.0.7",
       "author": "local",
       "supportedTypes": [
         "movie",
@@ -190,7 +198,8 @@
       ],
       "contentLanguage": [
         "en"
-      ]
+      ],
+      "hasSettings": true
     }
   ]
 }
