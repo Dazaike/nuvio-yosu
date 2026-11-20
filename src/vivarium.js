@@ -339,7 +339,7 @@ function fetchStreams(tmdbId, mediaType, season, episode) {
 // Settings screen of the app (gear icon on the plugin row; needs "hasSettings": true in the manifest).
 function onSettings() {
   return [
-    { type: 'info', label: 'Needed: paste the vg cookie and User-Agent of the browser that passed the vivarium.su CAPTCHA, from the device you play on. The "Nuvio cookie copier" extension copies both.' },
+    { type: 'info', label: 'Needed: paste the vg cookie and User-Agent of the browser that passed the vivarium.su CAPTCHA, from the device you play on. Cookie: browser DevTools > Application > Cookies. User-Agent: console, navigator.userAgent.' },
     { type: 'text', key: 'vg_cookie', label: 'vg cookie', placeholder: 'paste the vg value', description: 'Cookie of vivarium.su (a CAPTCHA pass, not a login).' },
     { type: 'text', key: 'user_agent', label: 'User-Agent', placeholder: 'Mozilla/5.0 ...', description: 'Exact User-Agent of the browser the cookie came from.' }
   ];

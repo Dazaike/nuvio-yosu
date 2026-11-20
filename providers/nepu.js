@@ -274,7 +274,7 @@ function fetchStreams(tmdbId, mediaType, season, episode) {
 // Settings screen of the app (gear icon on the plugin row; needs "hasSettings": true in the manifest).
 function onSettings() {
   return [
-    { type: 'info', label: 'Needed: paste the cf_clearance cookie and User-Agent of the browser that passed the nepu.is Cloudflare check, from the device you play on (the cookie only works from the connection that earned it). The "Nuvio cookie copier" extension copies both.' },
+    { type: 'info', label: 'Needed: paste the cf_clearance cookie and User-Agent of the browser that passed the nepu.is Cloudflare check, from the device you play on (the cookie only works from the connection that earned it). Cookie: browser DevTools > Application > Cookies. User-Agent: console, navigator.userAgent.' },
     { type: 'text', key: 'cf_clearance', label: 'cf_clearance cookie', placeholder: 'paste the cf_clearance value', description: 'Cookie of nepu.is (Cloudflare pass, not a login).' },
     { type: 'text', key: 'user_agent', label: 'User-Agent', placeholder: 'Mozilla/5.0 ...', description: 'Exact User-Agent of the browser the cookie came from.' }
   ];

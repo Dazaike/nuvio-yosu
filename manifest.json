@@ -1,7 +1,7 @@
 {
   "name": "Yosu",
   "author": "local",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "scrapers": [
     {
       "id": "4khdhub",
@@ -266,7 +266,7 @@
       "id": "nepu",
       "name": "Nepu",
       "description": "Movies and TV via nepu.is (HLS): Full HD plus the separate 4K upload when there is one. Cookie of your own browser needed, see the settings (gear) of this plugin.",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "author": "local",
       "supportedTypes": [
         "movie",
@@ -306,7 +306,7 @@
       "id": "vivarium",
       "name": "Vivarium",
       "description": "Movies and TV via vivarium.su (HLS). One Auto (Best) stream. Needs your own vg cookie, see the settings (gear) of this plugin.",
-      "version": "1.1.1",
+      "version": "1.1.2",
       "author": "local",
       "supportedTypes": [
         "movie",

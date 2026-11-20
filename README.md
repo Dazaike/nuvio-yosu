@@ -25,8 +25,9 @@ After editing a provider, bump its `version` (and the repo `version`) in `manife
 Nuvio stores settings per provider, so set them once per provider.
 
 1. The provider's own options come first. Only Nepu, PopcornMovies and Vivarium show the cookie and User-Agent fields;
-   no other provider has them. Cookie values are never in this repo, paste yours (the "Nuvio cookie copier" extension
-   copies cookie and User-Agent). Cookies are bound to the connection and User-Agent that earned them.
+   no other provider has them. Cookie values are never in this repo, paste yours (copy the cookie from your browser's
+   DevTools > Application > Cookies, and the User-Agent from the console with `navigator.userAgent`). Cookies are bound
+   to the connection and User-Agent that earned them.
 2. Then, on every provider: resolutions to show (4K, 1080p, 720p, 480p, 360p), minimum and maximum size in GB, blocked
    words, hide subtitles (not shown where the provider has its own subtitles switch), and sort (provider's order, best
    quality, largest).
