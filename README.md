@@ -49,8 +49,8 @@ Prints a `http://<ip>:8787/manifest.json` URL for this device or others on your 
 The addon's server-side extras (provider order across sources, smart stream testing, the dashboard) need a server. They
 stay in `nuvio-yoru-addon`.
 
-## Standalone repos
+## Not part of Yosu
 
-The six providers added in 1.1.0 also exist as their own repos (`nuvio-7movies`, `nuvio-cno`, `nuvio-moanatv`,
-`nuvio-nepu`, `nuvio-popcornmovies`, `nuvio-vivarium`). Installing both would list each source twice; use one.
-`nuvio-flystream` (experimental, does not work) and `nuvio-anicine` are not part of Yosu.
+The six providers added in 1.1.0 (7Movies, Cno, MoanaTV, Nepu, PopcornMovies, Vivarium) used to be separate repos. Those
+repos are deleted; Yosu is the only place they are published. `nuvio-flystream` (experimental, does not work) and
+`nuvio-anicine` are separate repos and not part of Yosu.
