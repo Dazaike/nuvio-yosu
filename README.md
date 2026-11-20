@@ -25,9 +25,10 @@ After editing a provider, bump its `version` (and the repo `version`) in `manife
 Nuvio stores settings per provider, so set them once per provider.
 
 1. The provider's own options come first. Only Nepu, PopcornMovies and Vivarium show the cookie and User-Agent fields;
-   no other provider has them. Cookie values are never in this repo, paste yours (copy the cookie from your browser's
-   DevTools > Application > Cookies, and the User-Agent from the console with `navigator.userAgent`). Cookies are bound
-   to the connection and User-Agent that earned them.
+   no other provider has them. Cookie values are never in this repo, paste yours. For `cf_clearance` (Nepu,
+   PopcornMovies) use the extension in `tools/cf-cookie-grabber` (below); for Vivarium's `vg` cookie and for the
+   User-Agent use DevTools > Application > Cookies and `navigator.userAgent`. Cookies are bound to the connection and
+   User-Agent that earned them.
 2. Then, on every provider: resolutions to show (4K, 1080p, 720p, 480p, 360p), minimum and maximum size in GB, blocked
    words, hide subtitles (not shown where the provider has its own subtitles switch), and sort (provider's order, best
    quality, largest).
@@ -38,6 +39,14 @@ filters providers that report a size in the stream name or title (UHD-style dire
 The code is `tail.js`, appended to each `src/<id>.js` by `node build.js`; edit those, rebuild, and commit `providers/`
 (that is what Nuvio fetches). `src/nepu.js` and `src/vivarium.js` differ from their own repos only in having no built-in
 cookie; `src/cno.js` has no cookie fields.
+
+## Cookie helper (tools/cf-cookie-grabber)
+
+Small Chrome/Edge extension (Manifest V3) for the `cf_clearance` cookie. Load it unpacked: `chrome://extensions` >
+Developer mode > Load unpacked > pick `tools/cf-cookie-grabber`. Open the site (nepu.is, popcornmovies.st) in that
+browser, pass the Cloudflare check, click the extension: it shows the cookie and your User-Agent with Copy buttons,
+"Copy JSON", and "Save cf.json". If the browser was never challenged no cookie exists and it says so. It only reads
+`cf_clearance`; it does not cover Vivarium's `vg` cookie. Nothing is sent anywhere.
 
 ## Self-host instead (optional)
 
