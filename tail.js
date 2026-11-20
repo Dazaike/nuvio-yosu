@@ -20,6 +20,8 @@
     if (/2160p|\b4k\b|\buhd\b/i.test(t)) return '4k';
     var r = ['1080p', '720p', '480p', '360p'];
     for (var i = 0; i < r.length; i++) if (t.toLowerCase().indexOf(r[i]) >= 0) return r[i];
+    var h = /\b(\d{3,4})p\b/i.exec(t);   // odd heights (1079p, 800p) go to the nearest bucket
+    if (h) { var n = +h[1]; return n >= 1800 ? '4k' : n >= 900 ? '1080p' : n >= 600 ? '720p' : n >= 420 ? '480p' : n >= 300 ? '360p' : 'unknown'; }
     return 'unknown';
   }
   function parseGB(t) {
@@ -48,15 +50,20 @@
       if (block.some(function (b) { return low.indexOf(b) >= 0; })) return;
       var out = s;
       if (hideSubs && s.subtitles) { out = {}; for (var k in s) if (k !== 'subtitles') out[k] = s[k]; }
-      rows.push({ s: out, r: RANK[res], gb: gb, n: n });
+      rows.push({ s: out, r: RANK[res], gb: gb, n: n, a: /\bauto\b/i.test(s.name || s.title || '') ? 0 : 1 });
     });
-    if (sort === 'quality') rows.sort(function (a, b) { return a.r - b.r || a.n - b.n; });
-    else if (sort === 'size') rows.sort(function (a, b) { return (a.gb === null) - (b.gb === null) || (b.gb || 0) - (a.gb || 0) || a.n - b.n; });
+    // "Auto (Best)" entries stay on top whichever sort is chosen
+    if (sort === 'quality') rows.sort(function (a, b) { return a.a - b.a || a.r - b.r || a.n - b.n; });
+    else if (sort === 'size') rows.sort(function (a, b) { return a.a - b.a || (a.gb === null) - (b.gb === null) || (b.gb || 0) - (a.gb || 0) || a.n - b.n; });
     return rows.map(function (x) { return x.s; });
   }
 
+  // The provider's own settings (cookie, User-Agent, server toggles) come first and are kept as they are.
   function onSettings() {
-    var out = [{ type: 'header', label: 'Resolutions to show' }];
+    var own = typeof ownSettings === 'function' ? ownSettings() : [];
+    var ownKeys = own.map(function (o) { return o.key; });
+    var out = own.slice();
+    out.push({ type: 'header', label: 'Resolutions to show' });
     RES.forEach(function (r) { out.push({ type: 'toggle', key: r.key, label: r.label, defaultValue: true }); });
     out.push({ type: 'info', label: 'Streams with no detectable resolution or size are always kept.' });
     out.push({ type: 'header', label: 'Size' });
@@ -64,7 +71,7 @@
     out.push({ type: 'text', key: 'max_gb', label: 'Maximum size (GB)', placeholder: 'no maximum' });
     out.push({ type: 'header', label: 'Filtering' });
     out.push({ type: 'text', key: 'block', label: 'Blocked words', placeholder: 'cam, hdcam, hindi', description: 'Comma separated. A stream is hidden if its name or title contains any of them.' });
-    out.push({ type: 'toggle', key: 'hide_subs', label: 'Hide subtitles', description: 'Drop the subtitles a stream comes with.', defaultValue: false });
+    if (ownKeys.indexOf('subtitles') < 0) out.push({ type: 'toggle', key: 'hide_subs', label: 'Hide subtitles', description: 'Drop the subtitles a stream comes with.', defaultValue: false });
     out.push({
       type: 'select', key: 'sort', label: 'Sort', defaultValue: 'provider',
       options: [
@@ -79,6 +86,7 @@
   var hasModule = typeof module !== 'undefined' && module.exports;
   var host = hasModule ? module.exports : global;
   var inner = host.getStreams;
+  var ownSettings = host.onSettings;
   function getStreams() { return Promise.resolve(inner.apply(null, arguments)).then(apply); }
   if (hasModule) module.exports = { getStreams: getStreams, onSettings: onSettings };
   else { global.getStreams = getStreams; global.onSettings = onSettings; }
