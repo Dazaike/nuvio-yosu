@@ -1,24 +1,10 @@
-// Vivarium (vivarium.su) provider for Nuvio. Promise-based on purpose (no async/await), plain ES5, no WebAssembly / crypto / Buffer /
+// Vivarium (vivarium.st) provider for Nuvio. Promise-based on purpose (no async/await), plain ES5, no WebAssembly / crypto / Buffer /
 // TextEncoder: the site's x-sig signer (SHA-256 + HMAC) is ported to plain JS below.
 //
 // Returns ONE "Vivarium - Auto (Best)" stream, picked from everything the site offers.
 //
-// ============================================================================================================================
-//  USER CONFIG  --  the ONLY block you ever need to edit  (or run:  node tools/set-cookie.js "<vg value>" "<user agent>")
-//
-//  VG_COOKIE   : value of the `vg` cookie of https://vivarium.su  (it is a Cloudflare Turnstile / CAPTCHA pass token, NOT a login).
-//                It is HttpOnly and lasts ~30 days. To refresh it:
-//                  1. open https://vivarium.su in a normal browser and pass the CAPTCHA if it asks,
-//                  2. DevTools -> Application -> Cookies -> https://vivarium.su -> copy the value of `vg`
-//                     (or from a console: cookieStore can't see HttpOnly cookies, so use the Application tab),
-//                  3. paste it below, bump "version" in manifest.json, commit + push.
-//  USER_AGENT  : the EXACT User-Agent of the browser you got the cookie from (the cookie is bound to the User-Agent).
-//                Copy it from the browser console:  navigator.userAgent
-//  WARNING     : this repository is public. Anyone who reads this file can use your CAPTCHA pass until it expires.
-// ============================================================================================================================
-var VG_COOKIE = '';  // Yosu: no built-in cookie; paste yours in the plugin settings (gear)
+// No cookie, no account, no settings: vivarium.st (DDoS-Guard, not Cloudflare) answers signed requests without a cookie.
 var USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36';
-// ============================================================================================================================
 
 var SITE = 'https://vivarium.st';  // Yosu: vivarium.su now 301-redirects here; the same /api/* answers on both hosts
 // Build constants of the current vivarium.su front end (x-cv header + the 64-hex value appended to every signed message).
@@ -149,9 +135,7 @@ function base64(bytes) {
 }
 
 function baseHeaders() {
-  var h = { 'User-Agent': USER_AGENT, 'Referer': SITE + '/', 'Accept': '*/*' };
-  if (VG_COOKIE) h.Cookie = 'vg=' + VG_COOKIE;   // Yosu: optional. vivarium.st answered without any cookie when tested (DDoS-Guard, not Cloudflare)
-  return h;
+  return { 'User-Agent': USER_AGENT, 'Referer': SITE + '/', 'Accept': '*/*' };
 }
 
 function withTimeout(p, ms, what) {
@@ -194,7 +178,7 @@ function signedGet(path, nonce, what) {
 
 function getNonces() {
   return plainGet('/api/n', '/api/n').then(function (r) {
-    if (r.status === 403) { log('403 from ' + SITE + ': blocked. If you set a vg cookie, it may be expired or the User-Agent differs; otherwise paste a fresh vg cookie + User-Agent in the plugin settings'); return []; }
+    if (r.status === 403) { log('403 from ' + SITE + ': blocked'); return []; }
     return r.ok ? r.json() : [];
   }).then(function (a) { return a && a.length ? a : []; })
     .catch(function (e) { log('ERROR /api/n', String(e && e.message || e)); return []; });
@@ -300,17 +284,8 @@ function getStreams(tmdbId, mediaType, season, episode) {
   });
 }
 
-// Values the user typed into the app (Nuvio KE: Settings > Content & Discovery > Plugins > Vivarium > Settings) win over the
-// constants above, so the cookie never has to be committed to a public repository. Other hosts have no SCRAPER_SETTINGS.
-function applyAppSettings() {
-  var s = (typeof SCRAPER_SETTINGS !== 'undefined' && SCRAPER_SETTINGS) || {};
-  if (typeof s.vg_cookie === 'string' && s.vg_cookie) VG_COOKIE = s.vg_cookie;
-  if (typeof s.user_agent === 'string' && s.user_agent) USER_AGENT = s.user_agent;
-}
-
 function fetchStreams(tmdbId, mediaType, season, episode) {
   T0 = Date.now();
-  applyAppSettings();
   log('getStreams', tmdbId, mediaType, season, episode);
   var isTv = mediaType === 'tv';
   var query = 'id=' + encodeURIComponent(tmdbId) + '&type=' + (isTv ? 'tv' : 'movie') + (isTv ? '&s=' + (season || 1) + '&e=' + (episode || 1) : '');
@@ -337,17 +312,8 @@ function fetchStreams(tmdbId, mediaType, season, episode) {
   }).catch(function (e) { log('FATAL', String(e && e.message || e)); return []; });
 }
 
-// Settings screen of the app (gear icon on the plugin row; needs "hasSettings": true in the manifest).
-function onSettings() {
-  return [
-    { type: 'info', label: 'Works without any setup (vivarium.st answered with no cookie when tested). Only if you start getting no streams, paste the vg cookie and User-Agent of a browser that opened vivarium and passed its check. Cookie: DevTools > Application > Cookies. User-Agent: console, navigator.userAgent.' },
-    { type: 'text', key: 'vg_cookie', label: 'vg cookie (optional)', placeholder: 'paste the vg value', description: 'Only if the site starts blocking you. Not needed today.' },
-    { type: 'text', key: 'user_agent', label: 'User-Agent (optional)', placeholder: 'Mozilla/5.0 ...', description: 'Only together with the cookie above: the exact User-Agent of the browser it came from.' }
-  ];
-}
-
-if (typeof module !== 'undefined' && module.exports) module.exports = { getStreams: getStreams, onSettings: onSettings, sign: sign, _internals: { parseSse: parseSse, toCandidates: toCandidates, score: score, hmacSha256Hex: hmacSha256Hex, utf8Bytes: utf8Bytes, base64: base64 } };
-else { global.getStreams = getStreams; global.onSettings = onSettings; }
+if (typeof module !== 'undefined' && module.exports) module.exports = { getStreams: getStreams, sign: sign, _internals: { parseSse: parseSse, toCandidates: toCandidates, score: score, hmacSha256Hex: hmacSha256Hex, utf8Bytes: utf8Bytes, base64: base64 } };
+else { global.getStreams = getStreams; }
 
 // ---- Yosu user settings (appended to every provider by build.js; edit tail.js, not providers/) ----
 // Settings gear of the plugin row: resolution toggles, size limits, blocked words, hide subtitles, sort.

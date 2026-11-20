@@ -1,12 +1,12 @@
 {
   "name": "Yosu",
   "author": "local",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "scrapers": [
     {
       "id": "4khdhub",
       "name": "4KHDHub",
-      "description": "4KHDHub direct links",
+      "description": "4khdhub.click streams",
       "version": "1.0.4",
       "author": "Nuvio Team",
       "supportedTypes": [
@@ -27,7 +27,7 @@
     {
       "id": "uhdmovies",
       "name": "UHDMovies",
-      "description": "UHD Movies streaming with multiple resolution",
+      "description": "uhdmovies.pink streams",
       "version": "1.2.2",
       "author": "Nuvio Team",
       "supportedTypes": [
@@ -48,7 +48,7 @@
     {
       "id": "vidlink",
       "name": "Vidlink",
-      "description": "Vidlink streaming with encrypted TMDB ID support for movies and TV shows",
+      "description": "vidlink.pro streams",
       "version": "1.0.2",
       "author": "Nuvio Team",
       "supportedTypes": [
@@ -70,7 +70,7 @@
     {
       "id": "castle",
       "name": "Castle",
-      "description": "Multi Lang provider",
+      "description": "hlowb.com streams",
       "version": "1.0.2",
       "author": "Nuvio Team",
       "supportedTypes": [
@@ -97,7 +97,7 @@
     {
       "id": "movieblast",
       "name": "MovieBlast",
-      "description": "Direct links via MovieBlast API with multi-language support",
+      "description": "cloud-mb.xyz streams",
       "version": "1.0.2",
       "author": "Nuvio Team",
       "supportedTypes": [
@@ -121,7 +121,7 @@
     {
       "id": "moviesdrive",
       "name": "MoviesDrive",
-      "description": "MoviesDrive streaming with HubCloud and Google Drive extraction",
+      "description": "moviesdrives.my streams",
       "version": "1.0.2",
       "author": "Nuvio Team",
       "supportedTypes": [
@@ -155,7 +155,7 @@
         "en"
       ],
       "name": "Dulo",
-      "description": "Dulo (dulo.mov) streams, up to 4K HLS",
+      "description": "dulo.mov streams",
       "formats": [
         "m3u8"
       ],
@@ -175,7 +175,7 @@
         "en"
       ],
       "name": "Movy",
-      "description": "Movy (movy.sx) streams, Auto (Best) first",
+      "description": "movy.sx streams",
       "formats": [
         "m3u8"
       ],
@@ -184,7 +184,7 @@
     {
       "id": "framextv",
       "name": "frameXTV",
-      "description": "Movies and TV via the frameXTV stream API (HLS)",
+      "description": "framextv.cc streams",
       "version": "1.0.8",
       "author": "local",
       "supportedTypes": [
@@ -204,7 +204,7 @@
     {
       "id": "7movies",
       "name": "7Movies",
-      "description": "Movies and TV via 7movies.ac (BigBang CDN HLS, up to 4K, multi-audio). No cookie or setup needed.",
+      "description": "7movies.ac streams",
       "version": "1.0.0",
       "author": "local",
       "supportedTypes": [
@@ -224,7 +224,7 @@
     {
       "id": "cno",
       "name": "Cno",
-      "description": "Movies and TV via beta.cno.to (HLS, up to 4K, Auto (Best) plus every quality), anime from the site's library with multi-audio and subtitles. No cookie or setup needed.",
+      "description": "cno.to streams",
       "version": "1.0.0",
       "author": "local",
       "supportedTypes": [
@@ -244,7 +244,7 @@
     {
       "id": "moanatv",
       "name": "MoanaTV",
-      "description": "Movies, TV and anime via moanatv.lfmx.app (HLS, up to 4K, Eren/Mikasa/Levi/Zeke and more). Auto (Best) first, then each working server. No cookie or setup needed.",
+      "description": "moanatv.lfmx.app streams",
       "version": "1.2.0",
       "author": "local",
       "supportedTypes": [
@@ -265,8 +265,8 @@
     {
       "id": "nepu",
       "name": "Nepu",
-      "description": "Movies and TV via nepu.is (HLS): Full HD plus the separate 4K upload when there is one. Cookie of your own browser needed, see the settings (gear) of this plugin.",
-      "version": "1.0.3",
+      "description": "nepu.is streams (needs cookies and stuff)",
+      "version": "1.0.4",
       "author": "local",
       "supportedTypes": [
         "movie",
@@ -285,8 +285,8 @@
     {
       "id": "popcornmovies",
       "name": "PopcornMovies",
-      "description": "Movies and TV via popcornmovies.st (HLS, up to 4K on some titles, English subtitles). Needs your Cloudflare cf_clearance cookie and User-Agent in the plugin settings.",
-      "version": "1.0.0",
+      "description": "popcornmovies.st streams (needs cookies and stuff)",
+      "version": "1.0.1",
       "author": "local",
       "supportedTypes": [
         "movie",
@@ -305,8 +305,8 @@
     {
       "id": "vivarium",
       "name": "Vivarium",
-      "description": "Movies and TV via vivarium.st (HLS). One Auto (Best) stream plus each server. No cookie needed.",
-      "version": "1.2.0",
+      "description": "vivarium.st streams",
+      "version": "1.2.1",
       "author": "local",
       "supportedTypes": [
         "movie",

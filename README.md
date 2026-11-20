@@ -10,9 +10,9 @@ links (Dulo) work.
 | 7Movies | no |
 | Cno | no (option: list every quality as its own entry) |
 | MoanaTV | no (options: subtitles, extra servers, other-language audio, show unavailable servers) |
-| Nepu | **yes**: `cf_clearance` cookie and User-Agent |
-| PopcornMovies | **yes**: `cf_clearance` cookie and User-Agent (option: check servers before listing) |
-| Vivarium | no (uses vivarium.st, which answered with no cookie when tested; optional `vg` cookie and User-Agent fields in case it starts blocking) |
+| Nepu | **yes** (needs cookies and stuff): `cf_clearance` cookie and User-Agent |
+| PopcornMovies | **yes** (needs cookies and stuff): `cf_clearance` cookie and User-Agent (option: check servers before listing) |
+| Vivarium | no (vivarium.st needs no cookie) |
 
 Add this in Nuvio as a plugin repository:
 
@@ -24,10 +24,10 @@ After editing a provider, bump its `version` (and the repo `version`) in `manife
 
 Nuvio stores settings per provider, so set them once per provider.
 
-1. The provider's own options come first. Nepu and PopcornMovies need the `cf_clearance` cookie and User-Agent fields;
-   Vivarium has the same kind of fields but they are optional; no other provider has them. Cookie values are never in
-   this repo, paste yours. For `cf_clearance` use the extension in `tools/cf-cookie-grabber` (below); the User-Agent is
-   in the browser console: `navigator.userAgent`. Cookies are bound to the connection and User-Agent that earned them.
+1. The provider's own options come first. Only Nepu and PopcornMovies have the cookie and User-Agent fields. Their
+   settings text points to the CF Clearance Copier tool in this repo (`tools/cf-cookie-copier`, below). Cookie values are
+   never in this repo. Cookies are bound to the connection and User-Agent that earned them, so copy on the same network
+   as the device you play on.
 2. Then, on every provider: resolutions to show (4K, 1080p, 720p, 480p, 360p), minimum and maximum size in GB, blocked
    words, hide subtitles (not shown where the provider has its own subtitles switch), and sort (provider's order, best
    quality, largest).
@@ -36,16 +36,17 @@ Streams with no readable resolution or size are kept. "Auto (Best)" entries stay
 filters providers that report a size in the stream name or title (UHD-style direct links do; HLS providers do not).
 
 The code is `tail.js`, appended to each `src/<id>.js` by `node build.js`; edit those, rebuild, and commit `providers/`
-(that is what Nuvio fetches). `src/nepu.js` and `src/vivarium.js` differ from their own repos only in having no built-in
-cookie; `src/cno.js` has no cookie fields.
+(that is what Nuvio fetches). `src/nepu.js` has no built-in cookie; `src/cno.js` has no cookie fields; `src/vivarium.js`
+uses vivarium.st with no cookie and no settings of its own.
 
-## Cookie helper (tools/cf-cookie-grabber)
+## CF Clearance Copier (tools/cf-cookie-copier)
 
-Small Chrome/Edge extension (Manifest V3) for the `cf_clearance` cookie. Load it unpacked: `chrome://extensions` >
-Developer mode > Load unpacked > pick `tools/cf-cookie-grabber`. Open the site (nepu.is, popcornmovies.st) in that
-browser, pass the Cloudflare check, click the extension: it shows the cookie and your User-Agent with Copy buttons,
-"Copy JSON", and "Save cf.json". If the browser was never challenged no cookie exists and it says so. On a DDoS-Guard
-site (vivarium.st) it says there is no `cf_clearance` to grab. It only reads `cf_clearance`. Nothing is sent anywhere.
+Small Chrome/Edge extension (Manifest V3) that copies the `cf_clearance` cookie and your User-Agent. Load it unpacked:
+`chrome://extensions` > Developer mode > Load unpacked > pick `tools/cf-cookie-copier`. Open the site (nepu.is,
+popcornmovies.st) in that browser, pass the Cloudflare check, click the extension: it shows the cookie and your
+User-Agent with Copy buttons, "Copy JSON", and "Save cf.json". If the browser was never challenged no cookie exists and
+it says so. On a DDoS-Guard site (vivarium.st) it says there is no `cf_clearance` to copy. It only reads `cf_clearance`.
+Nothing is sent anywhere.
 
 ## Self-host instead (optional)
 

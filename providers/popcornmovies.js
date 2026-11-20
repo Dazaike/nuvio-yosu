@@ -267,9 +267,9 @@ function getStreams(tmdbId, mediaType, season, episode) {
 function onSettings() {
   return [
     { type: 'header', label: 'PopcornMovies' },
-    { type: 'info', label: 'popcornmovies.st is behind a Cloudflare check. Open it in a normal browser on the same network as this device, pass the check, then copy the cf_clearance cookie (DevTools > Application > Cookies, HttpOnly so not visible from the console) and the browser User-Agent (console: navigator.userAgent). The cookie only works from the connection and User-Agent that earned it.' },
-    { type: 'text', key: 'cf_clearance', label: 'cf_clearance cookie', placeholder: 'paste the cf_clearance value', description: 'Cloudflare pass for popcornmovies.st (not a login).' },
-    { type: 'text', key: 'user_agent', label: 'User-Agent', placeholder: 'Mozilla/5.0 ...', description: 'Exact User-Agent of the browser the cookie came from.' },
+    { type: 'info', label: 'Use the CF Clearance Copier tool from GitHub: github.com/Dazaike/nuvio-yosu (folder tools/cf-cookie-copier). Open popcornmovies.st in a browser on the same network as this device, pass the Cloudflare check, click the tool, and paste what it shows into the two fields below. The cookie only works from the connection and User-Agent that earned it.' },
+    { type: 'text', key: 'cf_clearance', label: 'cf_clearance cookie', placeholder: 'paste the cf_clearance value', description: 'The cf_clearance value the copier shows.' },
+    { type: 'text', key: 'user_agent', label: 'User-Agent', placeholder: 'Mozilla/5.0 ...', description: 'The User-Agent the copier shows, unchanged.' },
     { type: 'toggle', key: 'probe_servers', label: 'Check servers before listing', description: 'Drops servers whose playlist does not answer (adds up to 6 s, keeps the list free of dead links).', defaultValue: true }
   ];
 }
