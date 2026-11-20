@@ -45,9 +45,12 @@ function showMissing(host, names) {
   $("fields").hidden = true;
   $("copy").disabled = true;
   $("save").disabled = true;
+  const ddg = /(^|, )__ddg/.test(names || "");
   setMsg(
-    "No cf_clearance for " + host + ". Cookies seen: " + (names || "none") +
-      ". Pass the Cloudflare check in this tab, then Refresh. If this browser was never challenged, no cookie was issued; use the browser that passed it.",
+    ddg
+      ? host + " uses DDoS-Guard (cookies seen: " + names + "), not Cloudflare, so there is no cf_clearance to grab. Plugins for such a site normally need no cookie."
+      : "No cf_clearance for " + host + ". Cookies seen: " + (names || "none") +
+        ". Pass the Cloudflare check in this tab, then Refresh. If this browser was never challenged, no cookie was issued; use the browser that passed it.",
     true
   );
 }

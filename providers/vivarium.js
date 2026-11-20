@@ -20,7 +20,7 @@ var VG_COOKIE = '';  // Yosu: no built-in cookie; paste yours in the plugin sett
 var USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36';
 // ============================================================================================================================
 
-var SITE = 'https://vivarium.su';
+var SITE = 'https://vivarium.st';  // Yosu: vivarium.su now 301-redirects here; the same /api/* answers on both hosts
 // Build constants of the current vivarium.su front end (x-cv header + the 64-hex value appended to every signed message).
 // They change when the site ships a new build; `node tools/refresh-constants.js` re-extracts them from the live site.
 var VIV_CV = 'aa165ce2580c';
@@ -149,7 +149,9 @@ function base64(bytes) {
 }
 
 function baseHeaders() {
-  return { 'User-Agent': USER_AGENT, 'Referer': SITE + '/', 'Accept': '*/*', 'Cookie': 'vg=' + VG_COOKIE };
+  var h = { 'User-Agent': USER_AGENT, 'Referer': SITE + '/', 'Accept': '*/*' };
+  if (VG_COOKIE) h.Cookie = 'vg=' + VG_COOKIE;   // Yosu: optional. vivarium.st answered without any cookie when tested (DDoS-Guard, not Cloudflare)
+  return h;
 }
 
 function withTimeout(p, ms, what) {
@@ -192,7 +194,7 @@ function signedGet(path, nonce, what) {
 
 function getNonces() {
   return plainGet('/api/n', '/api/n').then(function (r) {
-    if (r.status === 403) { log('403 from vivarium.su: VG_COOKIE expired / wrong USER_AGENT / Cookie header not sent (enter new values in the app: Plugins > Vivarium > Settings)'); return []; }
+    if (r.status === 403) { log('403 from ' + SITE + ': blocked. If you set a vg cookie, it may be expired or the User-Agent differs; otherwise paste a fresh vg cookie + User-Agent in the plugin settings'); return []; }
     return r.ok ? r.json() : [];
   }).then(function (a) { return a && a.length ? a : []; })
     .catch(function (e) { log('ERROR /api/n', String(e && e.message || e)); return []; });
@@ -310,7 +312,6 @@ function fetchStreams(tmdbId, mediaType, season, episode) {
   T0 = Date.now();
   applyAppSettings();
   log('getStreams', tmdbId, mediaType, season, episode);
-  if (!VG_COOKIE || VG_COOKIE.indexOf('__') === 0) { log('VG_COOKIE is not set: enter it in the app (Plugins > Vivarium > Settings) or see the top of providers/vivarium.js'); return Promise.resolve([]); }
   var isTv = mediaType === 'tv';
   var query = 'id=' + encodeURIComponent(tmdbId) + '&type=' + (isTv ? 'tv' : 'movie') + (isTv ? '&s=' + (season || 1) + '&e=' + (episode || 1) : '');
 
@@ -339,9 +340,9 @@ function fetchStreams(tmdbId, mediaType, season, episode) {
 // Settings screen of the app (gear icon on the plugin row; needs "hasSettings": true in the manifest).
 function onSettings() {
   return [
-    { type: 'info', label: 'Needed: paste the vg cookie and User-Agent of the browser that passed the vivarium.su CAPTCHA, from the device you play on. Cookie: browser DevTools > Application > Cookies. User-Agent: console, navigator.userAgent.' },
-    { type: 'text', key: 'vg_cookie', label: 'vg cookie', placeholder: 'paste the vg value', description: 'Cookie of vivarium.su (a CAPTCHA pass, not a login).' },
-    { type: 'text', key: 'user_agent', label: 'User-Agent', placeholder: 'Mozilla/5.0 ...', description: 'Exact User-Agent of the browser the cookie came from.' }
+    { type: 'info', label: 'Works without any setup (vivarium.st answered with no cookie when tested). Only if you start getting no streams, paste the vg cookie and User-Agent of a browser that opened vivarium and passed its check. Cookie: DevTools > Application > Cookies. User-Agent: console, navigator.userAgent.' },
+    { type: 'text', key: 'vg_cookie', label: 'vg cookie (optional)', placeholder: 'paste the vg value', description: 'Only if the site starts blocking you. Not needed today.' },
+    { type: 'text', key: 'user_agent', label: 'User-Agent (optional)', placeholder: 'Mozilla/5.0 ...', description: 'Only together with the cookie above: the exact User-Agent of the browser it came from.' }
   ];
 }
 
