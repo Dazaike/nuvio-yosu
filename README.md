@@ -10,8 +10,8 @@ links (Dulo) work.
 | 7Movies | no |
 | Cno | no (option: list every quality as its own entry) |
 | MoanaTV | no (options: subtitles, extra servers, other-language audio, show unavailable servers) |
-| Nepu | **yes** (needs cookies): `cf_clearance` cookie and User-Agent |
-| PopcornMovies | **yes** (needs cookies): `cf_clearance` cookie and User-Agent (option: check servers before listing) |
+| Nepu | **yes** (needs setup): `cf_clearance` cookie and User-Agent |
+| PopcornMovies | **yes** (needs setup): `cf_clearance` cookie and User-Agent (option: check servers before listing) |
 | Vivarium | no (vivarium.st needs no cookie) |
 
 Add this in Nuvio as a plugin repository:
