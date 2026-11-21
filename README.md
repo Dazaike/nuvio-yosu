@@ -62,11 +62,6 @@ Nothing is sent anywhere.
 
 Prints a `http://<ip>:8787/manifest.json` URL for this device or others on your Wi-Fi. Nuvio must allow plain `http://`.
 
-## Not included
-
-The addon's server-side extras (provider order across sources, smart stream testing, the dashboard) need a server. They
-stay in `nuvio-yoru-addon`.
-
 ## Not part of Yosu
 
 The six providers added in 1.1.0 (7Movies, Cno, MoanaTV, Nepu, PopcornMovies, Vivarium) used to be separate repos. Those
