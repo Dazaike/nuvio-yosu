@@ -71,7 +71,7 @@
       "id": "castle",
       "name": "Castle",
       "description": "hlowb.com streams",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "author": "Nuvio Team",
       "supportedTypes": [
         "movie",

@@ -103,6 +103,10 @@ function extractCipherFromResponse(response) {
     return trimmed;
   });
 }
+// Castle ids are 16-digit integers; some exceed 2^53 and JSON.parse would round them (wrong movieId -> "Movie doesn't exist").
+function parseCastleJson(text) {
+  return JSON.parse(text.replace(/:\s*(\d{16,})(?=\s*[,}\]])/g, ':"$1"'));
+}
 function extractDataBlock(obj) {
   if (obj && obj.data && typeof obj.data === "object") {
     return obj.data;
@@ -244,7 +248,7 @@ function searchCastle(securityKey, keyword, page = 1, size = 30) {
     const response = yield makeRequest(url);
     const cipher = yield extractCipherFromResponse(response);
     const decrypted = yield decryptCastle(cipher, securityKey);
-    return JSON.parse(decrypted);
+    return parseCastleJson(decrypted);
   });
 }
 function getDetails(securityKey, movieId) {
@@ -254,7 +258,7 @@ function getDetails(securityKey, movieId) {
     const response = yield makeRequest(url);
     const cipher = yield extractCipherFromResponse(response);
     const decrypted = yield decryptCastle(cipher, securityKey);
-    return JSON.parse(decrypted);
+    return parseCastleJson(decrypted);
   });
 }
 function getVideoV1(securityKey, movieId, episodeId, languageId, resolution = 2) {
@@ -282,7 +286,7 @@ function getVideoV1(securityKey, movieId, episodeId, languageId, resolution = 2)
     });
     const cipher = yield extractCipherFromResponse(response);
     const decrypted = yield decryptCastle(cipher, securityKey);
-    return JSON.parse(decrypted);
+    return parseCastleJson(decrypted);
   });
 }
 function getVideo2(securityKey, movieId, episodeId, resolution = 2) {
@@ -309,10 +313,13 @@ function getVideo2(securityKey, movieId, episodeId, resolution = 2) {
     });
     const cipher = yield extractCipherFromResponse(response);
     const decrypted = yield decryptCastle(cipher, securityKey);
-    return JSON.parse(decrypted);
+    return parseCastleJson(decrypted);
   });
 }
-function findCastleMovieId(securityKey, tmdbInfo) {
+function normTitle(t) {
+  return (t || "").toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, " ").trim();
+}
+function findCastleMovieId(securityKey, tmdbInfo, mediaType) {
   return __async(this, null, function* () {
     const searchTerm = tmdbInfo.year ? `${tmdbInfo.title} ${tmdbInfo.year}` : tmdbInfo.title;
     const searchResult = yield searchCastle(securityKey, searchTerm);
@@ -321,24 +328,28 @@ function findCastleMovieId(securityKey, tmdbInfo) {
     if (rows.length === 0) {
       throw new Error("No search results found");
     }
-    for (const item of rows) {
-      const itemTitle = (item.title || item.name || "").toLowerCase();
-      const searchTitle = tmdbInfo.title.toLowerCase();
-      if (itemTitle.includes(searchTitle) || searchTitle.includes(itemTitle)) {
-        const movieId2 = item.id || item.redirectId || item.redirectIdStr;
-        if (movieId2) {
-          console.log(`[Castle] Found match: ${item.title || item.name} (id: ${movieId2})`);
-          return movieId2.toString();
-        }
-      }
+    // movieType: 1 = TV shows, 2 = Movies, 5 = Anime (either)
+    const wantType = mediaType === "tv" ? 1 : 2;
+    const candidates = rows.filter((item) => (item.id || item.redirectId || item.redirectIdStr) && (!item.movieType || item.movieType === wantType || item.movieType === 5));
+    const yearOf = (item) => item.publishTime ? new Date(Number(item.publishTime)).getUTCFullYear() : null;
+    const wanted = normTitle(tmdbInfo.title);
+    const pick = (list, requireYear) => {
+      const yearDiff = (item) => tmdbInfo.year && yearOf(item) ? Math.abs(yearOf(item) - tmdbInfo.year) : null;
+      const ok = requireYear ? list.filter((item) => yearDiff(item) !== null && yearDiff(item) <= 1) : list;
+      return ok.slice().sort((a, b) => (yearDiff(a) === null ? 99 : yearDiff(a)) - (yearDiff(b) === null ? 99 : yearDiff(b)))[0];
+    };
+    // Exact title first; a loose "contains" match must also agree on the year, otherwise "Friends" lands on "School Friends".
+    const exact = pick(candidates.filter((item) => normTitle(item.title || item.name) === wanted), false);
+    const loose = exact || pick(candidates.filter((item) => {
+      const t = normTitle(item.title || item.name);
+      return t.includes(wanted) || wanted.includes(t);
+    }), true);
+    if (!loose) {
+      throw new Error(`No matching title in Castle for "${tmdbInfo.title}"`);
     }
-    const firstItem = rows[0];
-    const movieId = firstItem.id || firstItem.redirectId || firstItem.redirectIdStr;
-    if (movieId) {
-      console.log(`[Castle] Using first result: ${firstItem.title || firstItem.name} (id: ${movieId})`);
-      return movieId.toString();
-    }
-    throw new Error("Could not extract movie ID from search results");
+    const movieId = loose.id || loose.redirectId || loose.redirectIdStr;
+    console.log(`[Castle] Found match: ${loose.title || loose.name} (id: ${movieId})`);
+    return movieId.toString();
   });
 }
 
@@ -454,7 +465,7 @@ function getStreams(tmdbId, mediaType, seasonNum, episodeNum) {
       const tmdbInfo = yield getTMDBDetails(tmdbId, mediaType);
       console.log(`[Castle] TMDB Info: "${tmdbInfo.title}" (${tmdbInfo.year || "N/A"})`);
       const securityKey = yield getSecurityKey();
-      const movieId = yield findCastleMovieId(securityKey, tmdbInfo);
+      const movieId = yield findCastleMovieId(securityKey, tmdbInfo, mediaType);
       let details = yield getDetails(securityKey, movieId);
       let currentMovieId = movieId;
       if (mediaType === "tv" && seasonNum && episodeNum) {
