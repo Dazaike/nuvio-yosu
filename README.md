@@ -40,6 +40,13 @@ The code is `tail.js`, appended to each `src/<id>.js` by `node build.js`; edit t
 (that is what Nuvio fetches). `src/nepu.js` has no built-in cookie; `src/cno.js` has no cookie fields; `src/vivarium.js`
 uses vivarium.st with no cookie and no settings of its own.
 
+## Dulo subtitle Worker (workers/dulo-sub)
+
+Dulo refuses subtitle links that carry no dulo.mov Referer, and players send none. `src/dulo.js` therefore points its
+subtitle URLs at a small Cloudflare Worker, `https://yosu-dulo-sub.dazaike.workers.dev/sub?u=...`, which adds the
+Referer. It only fetches Dulo's own `zstream-proxy` payload links. Deploy: `cd workers/dulo-sub && npx wrangler deploy`.
+Set `SUB_PROXY` to `''` in `src/dulo.js` to link subtitles directly instead.
+
 ## CF Clearance Copier (tools/cf-cookie-copier)
 
 Small Chrome/Edge extension (Manifest V3) that copies the `cf_clearance` cookie and your User-Agent. Load it unpacked:

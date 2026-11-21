@@ -12,7 +12,7 @@
 var SITE = 'https://dulo.mov';
 var DEFAULT_DOMAIN = '2wwlgkfo-31a.workers.dev';
 var DEFAULT_TMDB = 'https://epfopf2vba.2wwlgkfo-31a.workers.dev';
-var SUB_PROXY = 'https://dulo-addon.dazaike.workers.dev/sub?u='; // adds the Referer that subtitle links require; '' = link directly
+var SUB_PROXY = 'https://yosu-dulo-sub.dazaike.workers.dev/sub?u='; // adds the Referer that subtitle links require (source: workers/dulo-sub); '' = link directly
 var UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36';
 var HEADERS = { 'User-Agent': UA, 'Origin': SITE, 'Referer': SITE + '/', 'Accept': 'application/json' };
 var PLAY_HEADERS = { 'User-Agent': UA, 'Origin': SITE, 'Referer': SITE + '/' };
