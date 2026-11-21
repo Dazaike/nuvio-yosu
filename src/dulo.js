@@ -10,8 +10,8 @@
 //  Playlists, segments and subtitles are refused (403 "nope") unless Referer or Origin is dulo.mov.
 //  The worker host domain changes now and then; the site publishes the current one in /dulo-config.js.
 var SITE = 'https://dulo.mov';
-var DEFAULT_DOMAIN = '2wwlgkfo-31a.workers.dev';
-var DEFAULT_TMDB = 'https://epfopf2vba.2wwlgkfo-31a.workers.dev';
+var DEFAULT_DOMAIN = 'e6dd8d160-edge.workers.dev';
+var DEFAULT_TMDB = 'https://epfopf2vba.e6dd8d160-edge.workers.dev';
 var SUB_PROXY = 'https://yosu-dulo-sub.dazaike.workers.dev/sub?u='; // adds the Referer that subtitle links require (source: workers/dulo-sub); '' = link directly
 var UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36';
 var HEADERS = { 'User-Agent': UA, 'Origin': SITE, 'Referer': SITE + '/', 'Accept': 'application/json' };
