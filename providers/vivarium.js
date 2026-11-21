@@ -9,8 +9,8 @@ var USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (
 var SITE = 'https://vivarium.st';  // Yosu: vivarium.su now 301-redirects here; the same /api/* answers on both hosts
 // Build constants of the current vivarium.su front end (x-cv header + the 64-hex value appended to every signed message).
 // They change when the site ships a new build; `node tools/refresh-constants.js` re-extracts them from the live site.
-var VIV_CV = 'aa165ce2580c';
-var VIV_CVKEY = '932a2bedfa8f81a124c8df968e5619eee92cf4d40d1c882ba9528fb4f5aca26f';
+var VIV_CV = '94092f52501e';
+var VIV_CVKEY = '51e87f5e8e951aa213fe48de7478cc0bf0e06b4eaa53cd948f97afd1b5f2b596';
 // 64 ASCII bytes used as the HMAC-SHA256 key (recovered from the site's hkf9.bin signer: data[0..64] ^ data[64 + (i & 7)]).
 var VIV_SIG_KEY = '6af5200a03de9a234734d3ef385c84490dc4164881e408450b6c35973803bded';
 

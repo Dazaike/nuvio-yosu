@@ -38,7 +38,8 @@ filters providers that report a size in the stream name or title (UHD-style dire
 
 The code is `tail.js`, appended to each `src/<id>.js` by `node build.js`; edit those, rebuild, and commit `providers/`
 (that is what Nuvio fetches). `src/nepu.js` has no built-in cookie; `src/cno.js` has no cookie fields; `src/vivarium.js`
-uses vivarium.st with no cookie and no settings of its own.
+uses vivarium.st with no cookie and no settings of its own. When Vivarium suddenly returns nothing after a site deploy,
+its signing constants are stale: run `node tools/refresh-vivarium.js && node build.js`, bump its version, push.
 
 ## Dulo subtitle Worker (workers/dulo-sub)
 

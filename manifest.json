@@ -1,7 +1,7 @@
 {
   "name": "Yosu",
   "author": "local",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "scrapers": [
     {
       "id": "4khdhub",
@@ -306,7 +306,7 @@
       "id": "vivarium",
       "name": "Vivarium",
       "description": "vivarium.st streams",
-      "version": "1.2.1",
+      "version": "1.2.2",
       "author": "local",
       "supportedTypes": [
         "movie",
