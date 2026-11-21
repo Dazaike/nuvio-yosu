@@ -1,6 +1,6 @@
 # nuvio-yosu
 
-One Nuvio plugin repository, fifteen separate providers. Each is its own entry in `manifest.json` and its own file in
+One Nuvio plugin repository, sixteen separate providers. Each is its own entry in `manifest.json` and its own file in
 `providers/`, so Nuvio lists and toggles them individually. They run inside Nuvio on the playing device, so IP-locked
 links (Dulo) work.
 
@@ -13,6 +13,7 @@ links (Dulo) work.
 | Nepu | **yes** (needs setup): `cf_clearance` cookie and User-Agent |
 | PopcornMovies | **yes** (needs setup): `cf_clearance` cookie and User-Agent (option: check servers before listing) |
 | Vivarium | no (vivarium.st needs no cookie) |
+| fprime | no (options: Aurora and Astra servers on or off, check the first segment, English subtitles) |
 
 Add this in Nuvio as a plugin repository:
 
